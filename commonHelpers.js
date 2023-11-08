@@ -1,0 +1,2 @@
+import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                      */const t=document.body;t.insertAdjacentHTML("afterbegin",'<div class="main__division"></div>');document.querySelector(".main__division");document.querySelector("[data-start]");const e=document.querySelector("[data-stop]");e.disabled=!0;t.style.height="100vh";t.style.width="100vw";
+//# sourceMappingURL=commonHelpers.js.map
