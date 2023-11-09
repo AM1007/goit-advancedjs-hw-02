@@ -45,7 +45,7 @@ Take a look at the demo video of the timer in action.
 
 https://user-images.githubusercontent.com/17479434/127672390-2a51efe1-06fb-41dd-86dd-8542393d3043.mp4
 
-##### Interface Elements
+#### Interface Elements
 
 The HTML includes a ready-made timer layout, date picker fields, and a button
 that, when clicked, should start the timer. Add minimal styling to the interface
@@ -75,7 +75,7 @@ elements.
 </div>
 ```
 
-##### The `flatpickr` library
+#### The `flatpickr` library
 
 Use the [flatpickr](https://flatpickr.js.org/) library to enable users to select
 the end date and time in a single interface element with cross-browser
@@ -115,7 +115,7 @@ const options = {
 };
 ```
 
-##### Date selection
+#### Date selection
 
 The `onClose()` method from the options object is called every time the
 `flatpickr` interface element is closed. This is where you should handle the
@@ -131,7 +131,7 @@ dates, so you can access the first element to work with the chosen date.
 - By clicking the "Start" button, the countdown to the selected date begins from
   the moment of clicking.
 
-##### Countdown timer
+#### Countdown timer
 
 By clicking the "Start" button, the script should calculate once per second how
 much time is left until the specified date and update the timer interface,
@@ -173,7 +173,7 @@ console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
 console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 ```
 
-##### Time formatting
+#### Time formatting
 
 The `convertMs()` function returns an object with the calculated time remaining
 until the end date. Please note that it doesn't format the result. In other
@@ -183,7 +183,7 @@ add a leading zero if the value has fewer than two characters. Write a
 `addLeadingZero(value)` function that uses the `padStart()` method to format the
 value before rendering it in the interface.
 
-##### The message library
+#### The message library
 
 > [!warning] WARNING.The following functionality is not mandatory for completing
 > the task but will be a good additional practice.
@@ -267,7 +267,7 @@ console.log(❌ Rejected promise ${position} in ${delay}ms);
 });
 ```
 
-##### The message library
+#### The message library
 
 > [!warning] WARNING.The following functionality is not mandatory for completing
 > the task but will be a good additional practice.
