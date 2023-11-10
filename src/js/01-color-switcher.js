@@ -24,8 +24,8 @@ function changeBackgroundColor() {
     document.body.classList.add('fade-in');
     setTimeout(() => {
       document.body.classList.remove('fade-in');
-    }, 500);
-  }, 500);
+    }, 250);
+  }, 250);
 }
 
 const startBtn = document.querySelector('[data-start]');
@@ -133,6 +133,7 @@ link.style.cssText = `
   font-family: sans-serif;
   text-transform: uppercase;
   font-size: 0.8em;
+  letter-spacing: 0.1em;
   text-decoration: none;
   color: #1D1B1B;
 
@@ -143,6 +144,7 @@ link.addEventListener('mouseover', () => {
   font-family: sans-serif;
   text-transform: uppercase;
   font-size: 0.9em;
+  letter-spacing: 0.1em;
   text-decoration: none;
   color: #1D1B1B;
   transition: font-size 0.9s;
@@ -153,6 +155,7 @@ link.addEventListener('mouseout', () => {
   font-family: sans-serif;
   text-transform: uppercase;
   font-size: 0.8em;
+  letter-spacing: 0.1em;
   text-decoration: none;
   color: #1D1B1B;
   transition: font-size 0.9s;
