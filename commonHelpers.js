@@ -1,4 +1,4 @@
-import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                      */function o(){return`#${Math.floor(Math.random()*16777215).toString(16).padStart(6,0)}`}function l(){return"linear-gradient("+90+"deg, "+o()+" 0%, "+o()+" 100%)"}function u(){document.body.classList.add("fade-out"),setTimeout(()=>{document.body.style.background=l(),document.body.classList.remove("fade-out"),document.body.classList.add("fade-in"),setTimeout(()=>{document.body.classList.remove("fade-in")},500)},500)}const t=document.querySelector("[data-start]"),e=document.querySelector("[data-stop]");e.disabled=!0;let s=null;t.addEventListener("click",()=>{s=setInterval(u,1e3),t.disabled=!0,e.disabled=!1});e.addEventListener("click",()=>{clearInterval(s),t.disabled=!1,e.disabled=!0});const a=document.createElement("style");a.textContent="body {transition: background 0.5s ease-in-out;}";document.head.insertAdjacentHTML("beforeend",a);const r=document.createElement("style");r.innerHTML=`
+import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                      */function o(){return`#${Math.floor(Math.random()*16777215).toString(16).padStart(6,0)}`}function l(){return"linear-gradient("+90+"deg, "+o()+" 0%, "+o()+" 100%)"}function u(){document.body.classList.add("fade-out"),setTimeout(()=>{document.body.style.background=l(),document.body.classList.remove("fade-out"),document.body.classList.add("fade-in"),setTimeout(()=>{document.body.classList.remove("fade-in")},250)},250)}const t=document.querySelector("[data-start]"),e=document.querySelector("[data-stop]");e.disabled=!0;let s=null;t.addEventListener("click",()=>{s=setInterval(u,1e3),t.disabled=!0,e.disabled=!1});e.addEventListener("click",()=>{clearInterval(s),t.disabled=!1,e.disabled=!0});const a=document.createElement("style");a.textContent="body {transition: background 0.5s ease-in-out;}";document.head.insertAdjacentHTML("beforeend",a);const r=document.createElement("style");r.innerHTML=`
   .fade-in {
     opacity: 0.8;
   }
@@ -41,6 +41,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   font-family: sans-serif;
   text-transform: uppercase;
   font-size: 0.8em;
+  letter-spacing: 0.1em;
   text-decoration: none;
   color: #1D1B1B;
 
@@ -48,6 +49,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   font-family: sans-serif;
   text-transform: uppercase;
   font-size: 0.9em;
+  letter-spacing: 0.1em;
   text-decoration: none;
   color: #1D1B1B;
   transition: font-size 0.9s;
@@ -55,6 +57,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   font-family: sans-serif;
   text-transform: uppercase;
   font-size: 0.8em;
+  letter-spacing: 0.1em;
   text-decoration: none;
   color: #1D1B1B;
   transition: font-size 0.9s;
