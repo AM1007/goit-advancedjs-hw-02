@@ -5,12 +5,7 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 const counterInput = document.querySelector('#datetime-picker');
-const daysCounter = document.querySelector('[data-days]');
-const hoursCounter = document.querySelector('[data-hours]');
-const minutesCounter = document.querySelector('[data-minutes]');
-const secondsCounter = document.querySelector('[data-seconds]');
 const startCounter = document.querySelector('[data-start]');
-
 // ====== adding a "Reset" button ======
 const resetCounter = document.createElement('button');
 resetCounter.setAttribute('id', 'resetBtn');
@@ -31,8 +26,8 @@ backLink.insertAdjacentElement('afterend', headline);
 let currentDate = null;
 let setDate = null;
 let progressDate = null;
-let timerId = null;
-let intervalId = null;
+let timerId1 = null;
+let timerId2 = null;
 
 // ====== adding time units conversion function ======
 
@@ -53,32 +48,6 @@ function convertMs(ms) {
 // ====== adding two-digit form view function ======
 
 const addLeadingZero = value => String(value).padStart(2, '0');
-
-// ====== adding countdown timer function ======
-
-const countDown = () => {
-  currentDate = new Date();
-  let remainingTime = setDate.getTime() - currentDate.getTime();
-  if (remainingTime > 0) {
-    remainingTime = convertMs(remainingTime);
-
-    let { days, hours, minutes, seconds } = remainingTime;
-    daysCounter.textContent = addLeadingZero(days);
-    hoursCounter.textContent = addLeadingZero(hours);
-    minutesCounter.textContent = addLeadingZero(minutes);
-    secondsCounter.textContent = addLeadingZero(seconds);
-    resetCounter.disabled = false;
-  } else {
-    clearInterval(timerId);
-    startCounter.disabled = true;
-    resetCounter.disabled = false;
-    counterInput.disabled = false;
-    iziToast.success({
-      title: 'OK',
-      message: 'Your wait has ended! Relax...',
-    });
-  }
-};
 
 // ====== adding flatpickr options ======
 
@@ -106,69 +75,102 @@ const options = {
 
 flatpickr('#datetime-picker', options);
 
+// ====== adding a countdown function function =====
+
+const timer = document.body.querySelector('.timer');
+timer.insertAdjacentHTML(
+  'afterend',
+  `
+  <div class="end"></div>
+  <div class="progress">
+    <div class="circle"></div>
+    <span class="percentage"></span>
+  </div>
+`
+);
+const endDiv = document.querySelector('.end');
+
+function countDown() {
+  currentDate = new Date();
+  let remainingTime = setDate.getTime() - currentDate.getTime();
+  if (remainingTime > 0) {
+    resetCounter.disabled = false;
+    const { days, hours, minutes, seconds } = convertMs(remainingTime);
+    endDiv.textContent = `Time's up in: ${addLeadingZero(
+      days
+    )} Days ${addLeadingZero(hours)}:${addLeadingZero(
+      minutes
+    )}:${addLeadingZero(seconds)}`;
+  } else {
+    progressCircle.style.background = `conic-gradient(#fafafa 0deg 360deg, transparent 360deg 360deg)`;
+    progressPercent.textContent = `100%`;
+    endDiv.textContent = 'Time has expired!';
+    clearInterval(timerId1);
+    clearInterval(timerId2);
+    startCounter.disabled = true;
+    resetCounter.disabled = false;
+    iziToast.success({
+      title: 'OK',
+      message: 'Your wait has ended! Relax...',
+    });
+  }
+}
+
+// ====== adding Progress bar ======
+const progressCircle = document.querySelector('.circle');
+const progressPercent = document.querySelector('.percentage');
+
+const initialProgressCircleStyles = {
+  background: progressCircle.style.background,
+};
+
+const progressBar = () => {
+  let nowDate = new Date();
+  let hundredPercent = setDate.getTime() - progressDate.getTime();
+  let currentProgress = setDate.getTime() - nowDate.getTime();
+  let percentCoeficient = (hundredPercent - currentProgress) / hundredPercent;
+  if (percentCoeficient > 1) {
+    percentCoeficient = 1;
+  }
+  let progressDegrees = Math.round(360 * percentCoeficient);
+  let progressNumber = Math.round(percentCoeficient * 100);
+  progressCircle.style.background = `conic-gradient(#daf6ff 0deg ${progressDegrees}deg, transparent ${progressDegrees}deg 360deg)`;
+  progressPercent.textContent = `${progressNumber}%`;
+};
+
 // ====== assigning functions to timer control buttons ======
 
 startCounter.disabled = true;
 
 startCounter.addEventListener('click', () => {
-  progressDate = new Date();
-  timerId = setInterval(countDown, 1000);
-  endDiv.style.display = 'block';
-  intervalId = populateEnd();
-  timer.style.display = 'block';
+  timerId1 = setInterval(countDown, 1000);
+  timerId2 = setInterval(progressBar, 100);
   startCounter.disabled = true;
-  counterInput.style.display = 'none';
   counterInput.disabled = true;
-  endDiv.dataset.intervalId = intervalId;
+  endDiv.style.display = 'block';
+  counterInput.style.display = 'none';
+  progressDate = new Date();
 });
 
 resetCounter.addEventListener('click', () => {
-  clearInterval(timerId);
-  startCounter.disabled = true;
   resetCounter.disabled = true;
-  counterInput.style.display = 'block';
   counterInput.disabled = false;
-  daysCounter.textContent = '00';
-  hoursCounter.textContent = '00';
-  minutesCounter.textContent = '00';
-  secondsCounter.textContent = '00';
-  clearInterval(intervalId);
+  counterInput.style.display = 'block';
+  if (progressCircle) {
+    progressCircle.style.background = initialProgressCircleStyles.background;
+  }
+  progressPercent.textContent = '';
   endDiv.textContent = '';
   endDiv.style.display = 'none';
-  timer.style.display = 'none';
-  intervalId = null;
+  clearInterval(timerId1);
+  clearInterval(timerId2);
 });
-
-// ====== adding "Expiring Time" function =====
-
-const timer = document.body.querySelector('.timer');
-timer.style.display = 'none';
-timer.insertAdjacentHTML('afterend', `<div class="end"></div>`);
-const endDiv = document.querySelector('.end');
-
-function populateEnd() {
-  const updateEndDiv = () => {
-    const remainingTime = setDate.getTime() - new Date().getTime();
-    if (remainingTime > 0) {
-      const remainingTimeObj = convertMs(remainingTime);
-      const { days, hours, minutes, seconds } = remainingTimeObj;
-      endDiv.textContent = `Time's up in: ${addLeadingZero(
-        days
-      )} Days ${addLeadingZero(hours)}:${addLeadingZero(
-        minutes
-      )}:${addLeadingZero(seconds)}`;
-    } else {
-      endDiv.textContent = 'Time has expired!';
-    }
-  };
-  updateEndDiv();
-  const intervalId = setInterval(updateEndDiv, 1000);
-  return intervalId;
-}
 
 // ====== Styles ======
 
 const headTitle = document.head.querySelector('title');
+const link = document.querySelector('a');
+link.setAttribute('id', 'pageLink');
 
 headTitle.insertAdjacentHTML(
   'afterend',
@@ -188,8 +190,19 @@ document.styleSheets[0].insertRule(`body {
 
 document.styleSheets[0].insertRule(` .title {
   font-family: 'Share Tech Mono', monospace;
-    color: #ffffff;
     text-align: center;
+    color: #daf6ff;
+    text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  
+}`);
+document.styleSheets[0].insertRule(` #pageLink {
+    text-decoration: none;
+    font-family: 'Share Tech Mono', monospace;
+    color: #456671;
+    
+  
+}`);
+document.styleSheets[0].insertRule(` #pageLink:hover {
     color: #daf6ff;
     text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
   
@@ -218,10 +231,10 @@ document.styleSheets[0].insertRule(`#startBtn:disabled{
 document.styleSheets[0].insertRule(`#startBtn {
   position: absolute;
   left: 50%;
-  bottom: 100px;
+  bottom: 80px;
   transform: translate(-50%, -50%);
   font-family: 'Share Tech Mono', monospace;
-  font-size: 1.5em;
+  font-size: 2em;
   text-align: center;
   padding: 5px 25px;
   color: #daf6ff;
@@ -243,10 +256,10 @@ document.styleSheets[0].insertRule(`#resetBtn:disabled{
 document.styleSheets[0].insertRule(`#resetBtn {
   position: absolute;
   left: 50%;
-  bottom: 100px;
+  bottom: 80px;
   transform: translate(-50%, -50%);
   font-family: 'Share Tech Mono', monospace;
-  font-size: 1.5em;
+  font-size: 2em;
   text-align: center;
   padding: 5px 25px;
   color: #daf6ff;
@@ -273,4 +286,66 @@ document.styleSheets[0].insertRule(`.end {
   font-family: 'Share Tech Mono', monospace;
   font-size: 1.5em;
   color: #daf6ff;
+}`);
+
+// Progress Bar styles
+
+document.styleSheets[0].insertRule(`.progress {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  width: 350px;
+  border-radius: 50%;
+}`);
+
+document.styleSheets[0].insertRule(`@-webkit-keyframes circle-in-center {
+  from {
+    -webkit-clip-path: circle(125%);
+    clip-path: circle(125%);
+  }
+  to {
+    -webkit-clip-path: circle(0%);
+    clip-path: circle(0%);
+  }
+}`);
+
+document.styleSheets[0].insertRule(`@keyframes circle-in-center {
+  from {
+    -webkit-clip-path: circle(125%);
+    clip-path: circle(125%);
+  }
+  to {
+    -webkit-clip-path: circle(0%);
+    clip-path: circle(0%);
+  }
+}`);
+
+document.styleSheets[0].insertRule(`.circle {
+  display: block;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  transform: rotate(-180deg);
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 60%,
+    black 40%
+  );
+  mask-image: radial-gradient(circle at 50% 50%, transparent 60%, black 40%);
+}`);
+
+document.styleSheets[0].insertRule(`.percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Share Tech Mono', monospace;
+  color: #daf6ff;
+  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  font-size: 70px;
 }`);
