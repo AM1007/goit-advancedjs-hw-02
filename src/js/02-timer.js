@@ -1,5 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/dark.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
@@ -12,7 +13,9 @@ const startCounter = document.querySelector('[data-start]');
 
 // ====== adding a "Reset" button ======
 const resetCounter = document.createElement('button');
+resetCounter.setAttribute('id', 'resetBtn');
 startCounter.insertAdjacentElement('afterend', resetCounter);
+startCounter.setAttribute('id', 'startBtn');
 resetCounter.textContent = 'Reset';
 resetCounter.type = 'button';
 resetCounter.setAttribute('data-reset', '');
@@ -28,7 +31,8 @@ backLink.insertAdjacentElement('afterend', headline);
 let currentDate = null;
 let setDate = null;
 let progressDate = null;
-let timerId1 = null;
+let timerId = null;
+let intervalId = null;
 
 // ====== adding time units conversion function ======
 
@@ -48,9 +52,7 @@ function convertMs(ms) {
 
 // ====== adding two-digit form view function ======
 
-function addLeadingZero(value) {
-  return String(value).padStart(2, '0');
-}
+const addLeadingZero = value => String(value).padStart(2, '0');
 
 // ====== adding countdown timer function ======
 
@@ -67,9 +69,9 @@ const countDown = () => {
     secondsCounter.textContent = addLeadingZero(seconds);
     resetCounter.disabled = false;
   } else {
-    clearInterval(timerId1);
-    startCounter.disabled = false;
-    resetCounter.disabled = true;
+    clearInterval(timerId);
+    startCounter.disabled = true;
+    resetCounter.disabled = false;
     counterInput.disabled = false;
     iziToast.success({
       title: 'OK',
@@ -81,6 +83,9 @@ const countDown = () => {
 // ====== adding flatpickr options ======
 
 const options = {
+  locale: {
+    firstDayOfWeek: 1,
+  },
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -107,26 +112,31 @@ startCounter.disabled = true;
 
 startCounter.addEventListener('click', () => {
   progressDate = new Date();
-  timerId1 = setInterval(countDown, 1000);
+  timerId = setInterval(countDown, 1000);
   endDiv.style.display = 'block';
-  populateEnd();
+  intervalId = populateEnd();
   timer.style.display = 'block';
   startCounter.disabled = true;
+  counterInput.style.display = 'none';
   counterInput.disabled = true;
+  endDiv.dataset.intervalId = intervalId;
 });
 
 resetCounter.addEventListener('click', () => {
-  clearInterval(timerId1);
+  clearInterval(timerId);
   startCounter.disabled = true;
   resetCounter.disabled = true;
+  counterInput.style.display = 'block';
   counterInput.disabled = false;
   daysCounter.textContent = '00';
   hoursCounter.textContent = '00';
   minutesCounter.textContent = '00';
   secondsCounter.textContent = '00';
+  clearInterval(intervalId);
   endDiv.textContent = '';
   endDiv.style.display = 'none';
   timer.style.display = 'none';
+  intervalId = null;
 });
 
 // ====== adding "Expiring Time" function =====
@@ -137,20 +147,130 @@ timer.insertAdjacentHTML('afterend', `<div class="end"></div>`);
 const endDiv = document.querySelector('.end');
 
 function populateEnd() {
-  endDiv.textContent = `Expiring time: ${setDate.getDate()}.${
-    setDate.getMonth() + 1
-  }.${setDate.getFullYear()} ${setDate.getHours()}:${setDate.getMinutes()}`;
+  const updateEndDiv = () => {
+    const remainingTime = setDate.getTime() - new Date().getTime();
+    if (remainingTime > 0) {
+      const remainingTimeObj = convertMs(remainingTime);
+      const { days, hours, minutes, seconds } = remainingTimeObj;
+      endDiv.textContent = `Time's up in: ${addLeadingZero(
+        days
+      )} Days ${addLeadingZero(hours)}:${addLeadingZero(
+        minutes
+      )}:${addLeadingZero(seconds)}`;
+    } else {
+      endDiv.textContent = 'Time has expired!';
+    }
+  };
+  updateEndDiv();
+  const intervalId = setInterval(updateEndDiv, 1000);
+  return intervalId;
 }
 
 // ====== Styles ======
 
-startCounter.setAttribute('id', 'startBtn');
-resetCounter.setAttribute('id', 'resetBtn');
+const headTitle = document.head.querySelector('title');
+
+headTitle.insertAdjacentHTML(
+  'afterend',
+  `<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    `
+);
+
+document.styleSheets[0].insertRule(`body {
+  height: 100vh;
+  background: #0f3854;
+  background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
+  background-size: 100%;
+  background-repeat: no-repeat;
+}`);
+
+document.styleSheets[0].insertRule(` .title {
+  font-family: 'Share Tech Mono', monospace;
+    color: #ffffff;
+    text-align: center;
+    color: #daf6ff;
+    text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  
+}`);
+
+document.styleSheets[0].insertRule(`#datetime-picker {
+  position: absolute;
+  left: 50%;
+  top: 150px;
+  transform: translate(-50%, -50%);
+  width: 308px;
+  padding: 5px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.5em;
+  text-align: center;
+  outline: none;
+  border: none;
+  color: #daf6ff;
+  background-color: transparent;
+}`);
 
 document.styleSheets[0].insertRule(`#startBtn:disabled{
   display: none;
 }`);
 
+document.styleSheets[0].insertRule(`#startBtn {
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  transform: translate(-50%, -50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.5em;
+  text-align: center;
+  padding: 5px 25px;
+  color: #daf6ff;
+  // text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}`);
+
+document.styleSheets[0].insertRule(`#startBtn:hover {
+  // border: 1px solid #daf6ff;
+  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 9);
+}`);
+
 document.styleSheets[0].insertRule(`#resetBtn:disabled{
   display: none;
+}`);
+
+document.styleSheets[0].insertRule(`#resetBtn {
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  transform: translate(-50%, -50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.5em;
+  text-align: center;
+  padding: 5px 25px;
+  color: #daf6ff;
+  // text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}`);
+
+document.styleSheets[0].insertRule(`#resetBtn:hover {
+  // border: 1px solid #daf6ff;
+  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 9);
+}`);
+
+document.styleSheets[0].insertRule(`.field {
+ display: none;
+}`);
+
+document.styleSheets[0].insertRule(`.end {
+  position: absolute;
+  left: 50%;
+  top: 150px;
+  transform: translate(-50%, -50%);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.5em;
+  color: #daf6ff;
 }`);
