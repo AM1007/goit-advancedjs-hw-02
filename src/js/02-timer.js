@@ -29,7 +29,7 @@ let progressDate = null;
 let timerId1 = null;
 let timerId2 = null;
 
-// ====== adding time units conversion function ======
+// ====== adding Time Units conversion function ======
 
 function convertMs(ms) {
   const second = 1000;
@@ -45,11 +45,11 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-// ====== adding two-digit form view function ======
+// ====== adding Two-digit form view function ======
 
 const addLeadingZero = value => String(value).padStart(2, '0');
 
-// ====== adding flatpickr options ======
+// ====== adding Flatpickr options ======
 
 const options = {
   locale: {
@@ -75,7 +75,7 @@ const options = {
 
 flatpickr('#datetime-picker', options);
 
-// ====== adding a countdown function function =====
+// ====== adding a Countdown function function =====
 
 const timer = document.body.querySelector('.timer');
 timer.insertAdjacentHTML(
@@ -138,7 +138,7 @@ const progressBar = () => {
   progressPercent.textContent = `${progressNumber}%`;
 };
 
-// ====== assigning functions to timer control buttons ======
+// ====== assigning functions to Timer Control buttons ======
 
 startCounter.disabled = true;
 
@@ -171,6 +171,7 @@ resetCounter.addEventListener('click', () => {
 const headTitle = document.head.querySelector('title');
 const link = document.querySelector('a');
 link.setAttribute('id', 'pageLink');
+const styles = document.styleSheets[0];
 
 headTitle.insertAdjacentHTML(
   'afterend',
@@ -180,7 +181,7 @@ headTitle.insertAdjacentHTML(
     `
 );
 
-document.styleSheets[0].insertRule(`body {
+styles.insertRule(`body {
   height: 100vh;
   background: #0f3854;
   background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
@@ -188,27 +189,25 @@ document.styleSheets[0].insertRule(`body {
   background-repeat: no-repeat;
 }`);
 
-document.styleSheets[0].insertRule(` .title {
+styles.insertRule(` #pageLink {
+  text-decoration: none;
+  font-family: 'Share Tech Mono', monospace;
+  color: #456671;
+}`);
+
+styles.insertRule(` #pageLink:hover {
+  color: #daf6ff;
+  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+}`);
+
+styles.insertRule(` .title {
   font-family: 'Share Tech Mono', monospace;
     text-align: center;
     color: #daf6ff;
     text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
-  
-}`);
-document.styleSheets[0].insertRule(` #pageLink {
-    text-decoration: none;
-    font-family: 'Share Tech Mono', monospace;
-    color: #456671;
-    
-  
-}`);
-document.styleSheets[0].insertRule(` #pageLink:hover {
-    color: #daf6ff;
-    text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
-  
 }`);
 
-document.styleSheets[0].insertRule(`#datetime-picker {
+styles.insertRule(`#datetime-picker {
   position: absolute;
   left: 50%;
   top: 150px;
@@ -224,11 +223,11 @@ document.styleSheets[0].insertRule(`#datetime-picker {
   background-color: transparent;
 }`);
 
-document.styleSheets[0].insertRule(`#startBtn:disabled{
+styles.insertRule(`#startBtn:disabled{
   display: none;
 }`);
 
-document.styleSheets[0].insertRule(`#startBtn {
+styles.insertRule(`#startBtn {
   position: absolute;
   left: 50%;
   bottom: 80px;
@@ -244,16 +243,16 @@ document.styleSheets[0].insertRule(`#startBtn {
   cursor: pointer;
 }`);
 
-document.styleSheets[0].insertRule(`#startBtn:hover {
+styles.insertRule(`#startBtn:hover {
   // border: 1px solid #daf6ff;
   text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 9);
 }`);
 
-document.styleSheets[0].insertRule(`#resetBtn:disabled{
+styles.insertRule(`#resetBtn:disabled{
   display: none;
 }`);
 
-document.styleSheets[0].insertRule(`#resetBtn {
+styles.insertRule(`#resetBtn {
   position: absolute;
   left: 50%;
   bottom: 80px;
@@ -269,16 +268,16 @@ document.styleSheets[0].insertRule(`#resetBtn {
   cursor: pointer;
 }`);
 
-document.styleSheets[0].insertRule(`#resetBtn:hover {
+styles.insertRule(`#resetBtn:hover {
   // border: 1px solid #daf6ff;
   text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 9);
 }`);
 
-document.styleSheets[0].insertRule(`.field {
+styles.insertRule(`.field {
  display: none;
 }`);
 
-document.styleSheets[0].insertRule(`.end {
+styles.insertRule(`.end {
   position: absolute;
   left: 50%;
   top: 150px;
@@ -288,9 +287,9 @@ document.styleSheets[0].insertRule(`.end {
   color: #daf6ff;
 }`);
 
-// Progress Bar styles
+// Progress bar styles
 
-document.styleSheets[0].insertRule(`.progress {
+styles.insertRule(`.progress {
   position: absolute;
   top: 52%;
   left: 50%;
@@ -303,7 +302,7 @@ document.styleSheets[0].insertRule(`.progress {
   border-radius: 50%;
 }`);
 
-document.styleSheets[0].insertRule(`@-webkit-keyframes circle-in-center {
+styles.insertRule(`@-webkit-keyframes circle-in-center {
   from {
     -webkit-clip-path: circle(125%);
     clip-path: circle(125%);
@@ -314,7 +313,7 @@ document.styleSheets[0].insertRule(`@-webkit-keyframes circle-in-center {
   }
 }`);
 
-document.styleSheets[0].insertRule(`@keyframes circle-in-center {
+styles.insertRule(`@keyframes circle-in-center {
   from {
     -webkit-clip-path: circle(125%);
     clip-path: circle(125%);
@@ -325,7 +324,7 @@ document.styleSheets[0].insertRule(`@keyframes circle-in-center {
   }
 }`);
 
-document.styleSheets[0].insertRule(`.circle {
+styles.insertRule(`.circle {
   display: block;
   width: 80%;
   height: 80%;
@@ -339,7 +338,7 @@ document.styleSheets[0].insertRule(`.circle {
   mask-image: radial-gradient(circle at 50% 50%, transparent 60%, black 40%);
 }`);
 
-document.styleSheets[0].insertRule(`.percentage {
+styles.insertRule(`.percentage {
   position: absolute;
   top: 50%;
   left: 50%;
