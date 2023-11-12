@@ -1,35 +1,31 @@
-import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                      */import{f as T,i as y}from"./assets/vendor-50196a99.js";const s=document.querySelector("#datetime-picker"),r=document.querySelector("[data-start]"),t=document.createElement("button");t.setAttribute("id","resetBtn");r.insertAdjacentElement("afterend",t);r.setAttribute("id","startBtn");t.textContent="Reset";t.type="button";t.setAttribute("data-reset","");t.setAttribute("disabled","");const v=s.previousElementSibling,f=document.createElement("h1");f.className="title";f.textContent="Pick an expiration date";v.insertAdjacentElement("afterend",f);let p=null,i=null,x=null,g=null,h=null;function R(e){const m=Math.floor(e/864e5),k=Math.floor(e%864e5/36e5),S=Math.floor(e%864e5%36e5/6e4),w=Math.floor(e%864e5%36e5%6e4/1e3);return{days:m,hours:k,minutes:S,seconds:w}}const u=e=>String(e).padStart(2,"0"),M={locale:{firstDayOfWeek:1},enableTime:!0,time_24hr:!0,defaultDate:new Date,minuteIncrement:1,onClose(e){p=new Date,i=e[0],i.getTime()-p.getTime()>0?r.disabled=!1:y.error({title:"Error",message:"Please choose a future date!"})}};T("#datetime-picker",M);const D=document.body.querySelector(".timer");D.insertAdjacentHTML("afterend",`
+import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                      */import{f as S,i as y}from"./assets/vendor-50196a99.js";const i=document.querySelector("#datetime-picker"),a=document.querySelector("[data-start]"),r=document.createElement("button");r.setAttribute("id","resetBtn");a.insertAdjacentElement("afterend",r);a.setAttribute("id","startBtn");r.textContent="Reset";r.type="button";r.setAttribute("data-reset","");r.setAttribute("disabled","");const R=i.previousElementSibling,m=document.createElement("h1");m.className="title";m.textContent="Pick an expiration date";R.insertAdjacentElement("afterend",m);let f=null,l=null,k=null,b=null,h=null;function M(t){const g=Math.floor(t/864e5),w=Math.floor(t%864e5/36e5),T=Math.floor(t%864e5%36e5/6e4),v=Math.floor(t%864e5%36e5%6e4/1e3);return{days:g,hours:w,minutes:T,seconds:v}}const u=t=>String(t).padStart(2,"0"),D={locale:{firstDayOfWeek:1},enableTime:!0,time_24hr:!0,defaultDate:new Date,minuteIncrement:1,onClose(t){f=new Date,l=t[0],l.getTime()-f.getTime()>0?a.disabled=!1:y.error({title:"Error",message:"Please choose a future date!"})}};S("#datetime-picker",D);const C=document.body.querySelector(".timer");C.insertAdjacentHTML("afterend",`
   <div class="end"></div>
   <div class="progress">
     <div class="circle"></div>
     <span class="percentage"></span>
   </div>
-`);const l=document.querySelector(".end");function C(){p=new Date;let e=i.getTime()-p.getTime();if(e>0){t.disabled=!1;const{days:o,hours:d,minutes:n,seconds:a}=R(e);l.textContent=`Time's up in: ${u(o)} Days ${u(d)}:${u(n)}:${u(a)}`}else c.style.background="conic-gradient(#fafafa 0deg 360deg, transparent 360deg 360deg)",b.textContent="100%",l.textContent="Time has expired!",clearInterval(g),clearInterval(h),r.disabled=!0,t.disabled=!1,y.success({title:"OK",message:"Your wait has ended! Relax..."})}const c=document.querySelector(".circle"),b=document.querySelector(".percentage"),I={background:c.style.background},A=()=>{let e=new Date,o=i.getTime()-x.getTime(),d=i.getTime()-e.getTime(),n=(o-d)/o;n>1&&(n=1);let a=Math.round(360*n),m=Math.round(n*100);c.style.background=`conic-gradient(#daf6ff 0deg ${a}deg, transparent ${a}deg 360deg)`,b.textContent=`${m}%`};r.disabled=!0;r.addEventListener("click",()=>{g=setInterval(C,1e3),h=setInterval(A,100),r.disabled=!0,s.disabled=!0,l.style.display="block",s.style.display="none",x=new Date});t.addEventListener("click",()=>{t.disabled=!0,s.disabled=!1,s.style.display="block",c&&(c.style.background=I.background),b.textContent="",l.textContent="",l.style.display="none",clearInterval(g),clearInterval(h)});const B=document.head.querySelector("title"),L=document.querySelector("a");L.setAttribute("id","pageLink");B.insertAdjacentHTML("afterend",`<link rel="preconnect" href="https://fonts.googleapis.com">
+`);const c=document.querySelector(".end");function I(){f=new Date;let t=l.getTime()-f.getTime();if(t>0){r.disabled=!1;const{days:o,hours:p,minutes:n,seconds:s}=M(t);c.textContent=`Time's up in: ${u(o)} Days ${u(p)}:${u(n)}:${u(s)}`}else d.style.background="conic-gradient(#fafafa 0deg 360deg, transparent 360deg 360deg)",x.textContent="100%",c.textContent="Time has expired!",clearInterval(b),clearInterval(h),a.disabled=!0,r.disabled=!1,y.success({title:"OK",message:"Your wait has ended! Relax..."})}const d=document.querySelector(".circle"),x=document.querySelector(".percentage"),A={background:d.style.background},B=()=>{let t=new Date,o=l.getTime()-k.getTime(),p=l.getTime()-t.getTime(),n=(o-p)/o;n>1&&(n=1);let s=Math.round(360*n),g=Math.round(n*100);d.style.background=`conic-gradient(#daf6ff 0deg ${s}deg, transparent ${s}deg 360deg)`,x.textContent=`${g}%`};a.disabled=!0;a.addEventListener("click",()=>{b=setInterval(I,1e3),h=setInterval(B,100),a.disabled=!0,i.disabled=!0,c.style.display="block",i.style.display="none",k=new Date});r.addEventListener("click",()=>{r.disabled=!0,i.disabled=!1,i.style.display="block",d&&(d.style.background=A.background),x.textContent="",c.textContent="",c.style.display="none",clearInterval(b),clearInterval(h)});const L=document.head.querySelector("title"),q=document.querySelector("a");q.setAttribute("id","pageLink");const e=document.styleSheets[0];L.insertAdjacentHTML("afterend",`<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    `);document.styleSheets[0].insertRule(`body {
+    `);e.insertRule(`body {
   height: 100vh;
   background: #0f3854;
   background: radial-gradient(ellipse at center,  #0a2e38  0%, #000000 70%);
   background-size: 100%;
   background-repeat: no-repeat;
-}`);document.styleSheets[0].insertRule(` .title {
+}`);e.insertRule(` #pageLink {
+  text-decoration: none;
+  font-family: 'Share Tech Mono', monospace;
+  color: #456671;
+}`);e.insertRule(` #pageLink:hover {
+  color: #daf6ff;
+  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+}`);e.insertRule(` .title {
   font-family: 'Share Tech Mono', monospace;
     text-align: center;
     color: #daf6ff;
     text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
-  
-}`);document.styleSheets[0].insertRule(` #pageLink {
-    text-decoration: none;
-    font-family: 'Share Tech Mono', monospace;
-    color: #456671;
-    
-  
-}`);document.styleSheets[0].insertRule(` #pageLink:hover {
-    color: #daf6ff;
-    text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
-  
-}`);document.styleSheets[0].insertRule(`#datetime-picker {
+}`);e.insertRule(`#datetime-picker {
   position: absolute;
   left: 50%;
   top: 150px;
@@ -43,9 +39,9 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   border: none;
   color: #daf6ff;
   background-color: transparent;
-}`);document.styleSheets[0].insertRule(`#startBtn:disabled{
+}`);e.insertRule(`#startBtn:disabled{
   display: none;
-}`);document.styleSheets[0].insertRule(`#startBtn {
+}`);e.insertRule(`#startBtn {
   position: absolute;
   left: 50%;
   bottom: 80px;
@@ -59,12 +55,12 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   background-color: transparent;
   border: none;
   cursor: pointer;
-}`);document.styleSheets[0].insertRule(`#startBtn:hover {
+}`);e.insertRule(`#startBtn:hover {
   // border: 1px solid #daf6ff;
   text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 9);
-}`);document.styleSheets[0].insertRule(`#resetBtn:disabled{
+}`);e.insertRule(`#resetBtn:disabled{
   display: none;
-}`);document.styleSheets[0].insertRule(`#resetBtn {
+}`);e.insertRule(`#resetBtn {
   position: absolute;
   left: 50%;
   bottom: 80px;
@@ -78,12 +74,12 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   background-color: transparent;
   border: none;
   cursor: pointer;
-}`);document.styleSheets[0].insertRule(`#resetBtn:hover {
+}`);e.insertRule(`#resetBtn:hover {
   // border: 1px solid #daf6ff;
   text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 9);
-}`);document.styleSheets[0].insertRule(`.field {
+}`);e.insertRule(`.field {
  display: none;
-}`);document.styleSheets[0].insertRule(`.end {
+}`);e.insertRule(`.end {
   position: absolute;
   left: 50%;
   top: 150px;
@@ -91,7 +87,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   font-family: 'Share Tech Mono', monospace;
   font-size: 1.5em;
   color: #daf6ff;
-}`);document.styleSheets[0].insertRule(`.progress {
+}`);e.insertRule(`.progress {
   position: absolute;
   top: 52%;
   left: 50%;
@@ -102,7 +98,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
   height: 350px;
   width: 350px;
   border-radius: 50%;
-}`);document.styleSheets[0].insertRule(`@-webkit-keyframes circle-in-center {
+}`);e.insertRule(`@-webkit-keyframes circle-in-center {
   from {
     -webkit-clip-path: circle(125%);
     clip-path: circle(125%);
@@ -111,7 +107,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
     -webkit-clip-path: circle(0%);
     clip-path: circle(0%);
   }
-}`);document.styleSheets[0].insertRule(`@keyframes circle-in-center {
+}`);e.insertRule(`@keyframes circle-in-center {
   from {
     -webkit-clip-path: circle(125%);
     clip-path: circle(125%);
@@ -120,7 +116,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
     -webkit-clip-path: circle(0%);
     clip-path: circle(0%);
   }
-}`);document.styleSheets[0].insertRule(`.circle {
+}`);e.insertRule(`.circle {
   display: block;
   width: 80%;
   height: 80%;
@@ -132,7 +128,7 @@ import"./assets/modulepreload-polyfill-ec808ebb.js";/* empty css                
     black 40%
   );
   mask-image: radial-gradient(circle at 50% 50%, transparent 60%, black 40%);
-}`);document.styleSheets[0].insertRule(`.percentage {
+}`);e.insertRule(`.percentage {
   position: absolute;
   top: 50%;
   left: 50%;
